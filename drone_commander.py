@@ -1,12 +1,19 @@
 from drone_command_queue import *
+from drone_command import *
 import datetime
 import time
+import traceback
 
 class DroneCommander(object):
-    def __init__(self, drones, commands=DroneCommandQueue()):
+    def __init__(self, drones, commands=DroneCommandQueue(), observer=None):
         self.drones = drones
         self.commands = commands
         self._reset_start_time()
+        self.observer = observer
+
+    def _notify(self, msg):
+        if self.observer != None:
+            self.observer.notify(msg)
 
     def _reset_start_time(self, delta_seconds=0):
         self.start_time = datetime.datetime.now()
@@ -21,7 +28,23 @@ class DroneCommander(object):
             time.sleep(time_delta)
 
     def _run_command(self, drone_id, command):
-        print drone_id, command # real implementation needed
+        try:
+            drone = self.drones[drone_id]
+            if command.type == DroneCommandType.START:
+                drone.start(command.height, command.time)
+            elif command.type == DroneCommandType.LAND:
+                drone.land(command.time)
+            elif command.type == DroneCommandType.MOVE:
+                drone.move(command.amount, command.time)
+            elif command.type == DroneCommandType.MOVETO:
+                drone.moveTo(command.position, command.time)
+            elif commant.type == DroneCommandType.MOVEHOME:
+                drone.moveHome(command.time)
+            else:
+                self._notify("unknown command")
+        except:
+            exception_traceback = traceback.format_exc()
+            self._notify(exception_traceback)
 
     def _run_realtime(self):
         queue = self.commands.copy()
