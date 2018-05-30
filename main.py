@@ -4,6 +4,7 @@ from drone_command import *
 from drone import *
 from drone_proxy import *
 from drone_commander import *
+from print_observer import *
 
 def main():
     max_velocity = 1.0
@@ -13,7 +14,7 @@ def main():
             Drone(max_velocity, Vector2D(1, 0)),
             Drone(max_velocity, Vector2D(1, 1))
     ]
-    wraped_drones = wrap_drones(drones)
+    wraped_drones = wrap_drones(drones, PrintObserver())
 
     queue = DroneCommandQueue()
     queue.push(make_command(0, DroneStartCommand, 0, 1, 0.5))
@@ -28,8 +29,8 @@ def main():
 
     drone_commander = DroneCommander(wraped_drones, queue)
 
-    drone_commander.print_commands()
-    drone_commander.run()
+    #drone_commander.print_commands()
+    drone_commander.run(False)
 
 if __name__ == "__main__":
     main()
