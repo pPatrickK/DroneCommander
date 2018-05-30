@@ -16,6 +16,9 @@ class PriorityQueue(object):
     def pop(self):
         return heapq.heappop(self.data)[1]
 
+    def peek(self):
+        return self.data[0][1]
+
     def flatcopy(self):
         return copy.copy(self)
 
@@ -23,4 +26,4 @@ class PriorityQueue(object):
         return copy.deepcopy(self)
 
     def copy(self):
-        return self.flatcopy()
+        return self.deepcopy()
