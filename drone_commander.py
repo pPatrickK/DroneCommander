@@ -21,7 +21,7 @@ class DroneCommander(object):
             time.sleep(time_delta)
 
     def _run_command(self, drone_id, command):
-        print drone_id, command
+        print drone_id, command # real implementation needed
 
     def _run_realtime(self):
         queue = self.commands.copy()
