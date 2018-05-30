@@ -1,20 +1,22 @@
 from vector2d import *
-from drone_state import *
 
 class Drone(object):
     def __init__(self, max_velocity, position = Vector2D()):
-        self.position = position
-        self.state = DroneState.GROUNDED
+        self.home_position = position
+        self.position = self.home_position
         self.max_velocity = max_velocity
 
     def start(self, height, time):
-        self.state = DroneState.AIRBORNE
+        pass
 
     def land(self, time):
-        self.state = DroneState.GROUNDED
+        pass
 
     def move(self, amount, time):
-        self.position = self.position + amount
+        self.moveTo(self.position + amount)
 
     def moveTo(self, position, time):
         self.position = position
+
+    def moveHome(self, time):
+        self.moveTo(self.home_position)
