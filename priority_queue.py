@@ -6,6 +6,7 @@ class PriorityQueue(object):
         self.key = key
         if initial:
             self.data = [(key(item), item) for item in initial]
+            heapq.heapify(self.data)
         else:
             self.data = []
 
