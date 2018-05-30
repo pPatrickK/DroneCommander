@@ -1,3 +1,5 @@
+import math
+
 class Vector2D(object):
     def __init__(self, x = 0.0, y = 0.0):
         self.x = x
