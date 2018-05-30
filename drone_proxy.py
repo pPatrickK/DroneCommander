@@ -48,7 +48,7 @@ class DroneProxy(object):
             self.drone.moveHome(position, time)
 
     def start(self, height, time):
-        if not self.check_and_set_time_for_command(time): # problem
+        if not self.check_and_set_time_for_command(time):
             self.notify("start for start was too early")
         elif not self.check_max_velocity_height(height, time):
             self.notify("drone is too fast in start")
@@ -57,7 +57,7 @@ class DroneProxy(object):
             self.height = height
 
     def land(self, time):
-        if not self.check_and_set_time_for_command(time): # problem
+        if not self.check_and_set_time_for_command(time):
             self.notify("start for land was too early")
         elif not self.check_max_velocity_height(height, time):
             self.notify("drone is too fast in land")
