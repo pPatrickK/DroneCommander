@@ -1,7 +1,3 @@
-# self.home_position
-# self.position
-# self.max_velocity
-
 class DroneProxy(object):
     def __init__(self, drone, observer=None):
         self.drone = drone
