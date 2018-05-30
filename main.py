@@ -29,6 +29,7 @@ def main():
     drone_commander = DroneCommander(wraped_drones, queue)
 
     drone_commander.print_commands()
+    drone_commander.run()
 
 if __name__ == "__main__":
     main()
