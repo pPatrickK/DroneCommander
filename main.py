@@ -3,6 +3,7 @@ from drone_command_queue import *
 from drone_command import *
 from drone import *
 from drone_proxy import *
+from drone_commander import *
 
 def main():
     max_velocity = 1.0
@@ -25,12 +26,9 @@ def main():
     queue.push(make_command(2, DroneMoveCommand, 3, 1.5, Vector2D()))
     queue.push(make_command(3, DroneMoveCommand, 2, 3, Vector2D()))
 
-    while len(queue.data) > 0:
-        command_data = queue.pop()
-        id = command_data[0]
-        command = command_data[1]
-        print "drone:", id
-        print command
+    drone_commander = DroneCommander(wraped_drones, queue)
+
+    drone_commander.print_commands()
 
 if __name__ == "__main__":
     main()

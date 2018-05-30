@@ -15,4 +15,4 @@ class PriorityQueue(object):
         return heapq.heappop(self.data)[1]
 
     def copy(self):
-        return PriorityQueue(self.data[:], self.key)
+        return PriorityQueue(self.data[:], key=self.key) # unwrap data
