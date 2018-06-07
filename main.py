@@ -18,7 +18,7 @@ def main():
     drones = wrap_drones(drones, error_observer)
 
     queue = DroneCommandQueue()
-    queue.push(make_command(0, DroneStartCommand, 0, 1, 10.5))
+    queue.push(make_command(0, DroneStartCommand, 0, 1, 0.9))
     queue.push(make_command(1, DroneStartCommand, 1, 1, 0.5))
     queue.push(make_command(2, DroneStartCommand, 1, 1, 0.5))
     queue.push(make_command(3, DroneStartCommand, 0, 1, 0.5))
@@ -30,7 +30,7 @@ def main():
 
     drone_commander = DroneCommander(drones, queue, error_observer)
 
-    #drone_commander.print_commands()
+    # drone_commander.print_commands()
     drone_commander.run(False)
 
 
