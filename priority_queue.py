@@ -1,5 +1,7 @@
 import heapq
 
+import  copy as copy
+
 class PriorityQueue(object):
     def __init__(self, initial=None, key=lambda x:x):
         self.key = key
@@ -15,4 +17,4 @@ class PriorityQueue(object):
         return heapq.heappop(self.data)[1]
 
     def copy(self):
-        return PriorityQueue(self.data[:], key=self.key) # unwrap data
+        return copy.deepcopy(self)
