@@ -13,7 +13,7 @@ class Drone(object):
         pass
 
     def move(self, amount, time):
-        self.moveTo(self.position + amount)
+        self.moveTo(self.position + amount, time)
 
     def moveTo(self, position, time):
         self.position = position

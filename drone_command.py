@@ -8,7 +8,6 @@ class DroneCommandType(Enum):
     MOVETO = 4
     MOVEHOME = 5
 
-# add drone or drone_id !!!!!!!!!!!!!!!!11!!111!111!11elf
 class DroneCommand(object):
     def __init__(self, type, start):
         self.type = type

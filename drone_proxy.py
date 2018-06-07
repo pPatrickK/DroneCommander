@@ -1,7 +1,3 @@
-# self.home_position
-# self.position
-# self.max_velocity
-
 class DroneProxy(object):
     def __init__(self, drone, observer=None):
         self.drone = drone
@@ -13,19 +9,19 @@ class DroneProxy(object):
         if self.observer != None:
             self.observer.notify(msg)
 
-    def check_and_set_time_for_command(self, start, commands_seconds):
-        if self.time_for_next_command <= start:
-            self.time_for_next_command = start + commands_seconds
+    def check_and_set_time_for_command(self, commands_seconds):
+        if self.time_for_next_command <= self.time_for_next_command:
+            self.time_for_next_command += commands_seconds
             return True
         return False
 
     def check_max_velocity(self, movement, time):
         velocity = movement.length() / time
-        return drone.max_velocity >= velocity;
+        return self.drone.max_velocity >= velocity;
 
     def check_max_velocity_height(self, height, time):
         velocity = abs(height - self.height) / time
-        return drone.max_velocity >= velocity
+        return self.drone.max_velocity >= velocity
 
     def move(self, amount, time):
         if not self.check_and_set_time_for_command(time):
@@ -52,7 +48,7 @@ class DroneProxy(object):
             self.drone.moveHome(position, time)
 
     def start(self, height, time):
-        if not self.check_and_set_time_for_command(self.start_time):
+        if not self.check_and_set_time_for_command(time):
             self.notify("start for start was too early")
         elif not self.check_max_velocity_height(height, time):
             self.notify("drone is too fast in start")
@@ -61,7 +57,7 @@ class DroneProxy(object):
             self.height = height
 
     def land(self, time):
-        if not self.check_and_set_time_for_command(self.land_time):
+        if not self.check_and_set_time_for_command(time):
             self.notify("start for land was too early")
         elif not self.check_max_velocity_height(height, time):
             self.notify("drone is too fast in land")
@@ -73,4 +69,4 @@ def wrap_drone(drone, observer=None):
     return DroneProxy(drone, observer)
 
 def wrap_drones(drones, observer=None):
-    return (wrap_drone(drone, observer) for drone in drones)
+    return list((wrap_drone(drone, observer) for drone in drones))
