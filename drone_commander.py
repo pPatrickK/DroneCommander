@@ -73,6 +73,11 @@ class DroneCommander(object):
         else:
             self._run_fast()
 
+    def runForever(self, realtime=True):
+        while True:
+            self.run(realtime)
+            time.sleep(0.01)
+
     def print_commands(self):
         queue = self.commands.copy()
 
@@ -80,5 +85,5 @@ class DroneCommander(object):
             command_data = queue.pop()
             id = command_data[0]
             command = command_data[1]
-            print "drone:", id
-            print command
+            print("drone:", id)
+            print(command)

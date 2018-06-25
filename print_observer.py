@@ -3,4 +3,4 @@ class PrintObserver(object):
         pass
 
     def notify(self, msg):
-        print "ERROR:", msg
+        print("ERROR:", msg)
