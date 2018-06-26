@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 from drone import Drone as Drone
+from crazyflie_drone import *
 from drone_commander import DroneCommander
 from vector3d import Vector3D
 from drone_command_queue import *
@@ -7,6 +8,7 @@ from drone_command import *
 from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
+from crazyflie import *
 
 def on_connect(client, userdata, flags, rc):
     print "Connecterd with the result code: " + str(rc)
@@ -33,10 +35,10 @@ def run_drone_commander(args):
     max_velocity = 1.0
     error_observer = PrintObserver()
     drones = [
-            Drone(max_velocity, Vector3D(0, 0, 0)),
-            Drone(max_velocity, Vector3D(0, 1, 0)),
-            Drone(max_velocity, Vector3D(1, 0, 0)),
-            Drone(max_velocity, Vector3D(1, 1, 0))
+            CrazyflieDrone(max_velocity, Vector3D(0, 0, 0)),
+            CrazyflieDrone(max_velocity, Vector3D(0, 1, 0)),
+            CrazyflieDrone(max_velocity, Vector3D(1, 0, 0)),
+            CrazyflieDrone(max_velocity, Vector3D(1, 1, 0))
     ]
     drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
