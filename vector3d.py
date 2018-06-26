@@ -65,4 +65,4 @@ class Vector3D(object):
         return self.toString()
 
     def toString(self):
-        return "[" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) "]"
+        return "[" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + "]"

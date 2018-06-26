@@ -1,7 +1,7 @@
-from vector2d import *
+from vector3d import *
 
 class Drone(object):
-    def __init__(self, max_velocity, position = Vector2D(), yaw = 0.0):
+    def __init__(self, max_velocity, position = Vector3D(), yaw = 0.0):
         self.home_position = position
         self.position = self.home_position
         self.max_velocity = max_velocity
