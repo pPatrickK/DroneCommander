@@ -16,7 +16,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/goto'):
-        command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector2D(0, 3)))
+        command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector2D(0, 3), 1.0))
         print "got goto"
 
 def run_drone_commander(args):

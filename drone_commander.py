@@ -35,9 +35,9 @@ class DroneCommander(object):
             elif command.type == DroneCommandType.LAND:
                 drone.land(command.time)
             elif command.type == DroneCommandType.MOVE:
-                drone.move(command.amount, command.time)
+                drone.move(command.amount, command.yaw_amount, command.time)
             elif command.type == DroneCommandType.MOVETO:
-                drone.moveTo(command.position, command.time)
+                drone.moveTo(command.position, comamnd.yaw, command.time)
             elif commant.type == DroneCommandType.MOVEHOME:
                 drone.moveHome(command.time)
             else:

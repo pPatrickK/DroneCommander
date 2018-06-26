@@ -23,21 +23,21 @@ class DroneProxy(object):
         velocity = abs(height - self.height) / time
         return self.drone.max_velocity >= velocity
 
-    def move(self, amount, time):
+    def move(self, amount, yaw, time):
         if not self.check_and_set_time_for_command(time):
             self.notify("start for move was too early")
         elif not self.check_max_velocity(amount, time):
             self.notify("drone is too fast in move")
         else:
-            self.drone.move(amount, time)
+            self.drone.move(amount, yaw, time)
 
-    def moveTo(self, position, time):
+    def moveTo(self, position, yaw, time):
         if not self.check_and_set_time_for_command(time):
             self.notify("start for moveTo was too early")
         elif not self.check_max_velocity(position - drone.position, time):
             self.notify("drone is too fast in moveTo")
         else:
-            self.drone.moveTo(position, time)
+            self.drone.moveTo(position, yaw, time)
 
     def moveHome(self, time):
         if not self.check_and_set_time_for_command(time):
@@ -45,7 +45,7 @@ class DroneProxy(object):
         elif not self.check_max_velocity(drone.home_position - drone.position, time):
             self.notify("drone is too fast in moveHome")
         else:
-            self.drone.moveHome(position, time)
+            self.drone.moveHome(time)
 
     def start(self, height, time):
         if not self.check_and_set_time_for_command(time):

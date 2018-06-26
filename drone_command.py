@@ -50,26 +50,28 @@ class DroneLandCommand(DroneTimedCommand):
         return super(DroneLandCommand, self).toString()
 
 class DroneMoveCommand(DroneTimedCommand):
-    def __init__(self, start, time, amount):
+    def __init__(self, start, time, amount, yaw_amount):
         super(DroneMoveCommand, self).__init__(DroneCommandType.MOVE, start, time)
         self.amount = amount
+        self.yaw_amount = yaw_amount
 
     def __str__(self):
         return self.toString()
 
     def toString(self):
-        return super(DroneMoveCommand, self).toString() + "amount of: " + self.amount.toString() + "\n"
+        return super(DroneMoveCommand, self).toString() + "amount of: " + self.amount.toString() + + " yaw amount of: " + str(self.yaw_amount) + "\n"
 
 class DroneMoveToCommand(DroneTimedCommand):
-    def __init__(self, start, time, position):
+    def __init__(self, start, time, position, yaw):
         super(DroneMoveToCommand, self).__init__(DroneCommandType.MOVETO, start, time)
         self.position = position
+        self.yaw = yaw
 
     def __str__(self):
         return self.toString()
 
     def toString(self):
-        return super(DroneMoveToCommand, self).toString() + "position: " + self.position.toString() + "\n"
+        return super(DroneMoveToCommand, self).toString() + "position: " + self.position.toString() + " yaw: " + str(self.yaw) + "\n"
 
 class DroneMoveHomeCommand(DroneTimedCommand):
     def __init__(self, start, time):
