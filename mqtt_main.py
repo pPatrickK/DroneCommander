@@ -8,7 +8,9 @@ from drone_command import *
 from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
-from crazyflie import *
+import sys, os
+sys.path.append(os.path.join(sys.path[0], '..'))
+from pycrazyswarm import *
 
 def on_connect(client, userdata, flags, rc):
     print "Connecterd with the result code: " + str(rc)
