@@ -1,23 +1,22 @@
-#!python3
 import paho.mqtt.client as mqtt
 from drone import Drone as Drone
 from drone_commander import DroneCommander
 from vector2d import Vector2D
 from drone_command_queue import *
 from drone_command import *
-from _thread import start_new_thread
+from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
 
 def on_connect(client, userdata, flags, rc):
-    print("Connecterd with the result code: " + str(rc))
+    print "Connecterd with the result code: " + str(rc)
     client.subscribe("crazyflie/goto")
 
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
+    print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/goto'):
-        command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector2D()))
-        print("got goto")
+        command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector2D(0, 3)))
+        print "got goto"
 
 def run_drone_commander(args):
     max_velocity = 1.0
@@ -28,7 +27,7 @@ def run_drone_commander(args):
             Drone(max_velocity, Vector2D(1, 0)),
             Drone(max_velocity, Vector2D(1, 1))
     ]
-    drones = wrap_drones(drones, error_observer)
+    #drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
 
