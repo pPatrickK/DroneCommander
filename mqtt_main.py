@@ -7,17 +7,17 @@ from drone_command import *
 from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
-import json
 
 def on_connect(client, userdata, flags, rc):
     print "Connecterd with the result code: " + str(rc)
-    client.subscribe("crazyflie/goto")
+    client.subscribe("crazyflie/start")
 
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
-    if(msg.topic == 'crazyflie/goto'):
-        command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector3D(0, 3), 1.0))
-        print "got goto"
+    if(msg.topic == 'crazyflie/start'): # {"id":0, "data": [0.0, 1.0, 0.5] }
+        #command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector3D(0, 3), 1.0))
+        print "got start"
+        print make_command_from_json(DroneStartCommand, msg.payload)
 
 def run_drone_commander(args):
     max_velocity = 1.0
