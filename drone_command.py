@@ -60,7 +60,7 @@ class DroneMoveCommand(DroneTimedCommand):
         return self.toString()
 
     def toString(self):
-        return super(DroneMoveCommand, self).toString() + "amount of: " + self.amount.toString() + + " yaw amount of: " + str(self.yaw_amount) + "\n"
+        return super(DroneMoveCommand, self).toString() + "amount of: " + self.amount.toString() + " yaw amount of: " + str(self.yaw_amount) + "\n"
 
 class DroneMoveToCommand(DroneTimedCommand):
     def __init__(self, start, time, position, yaw):
@@ -92,3 +92,17 @@ def make_command_from_json(TYPE, json_data):
     id = python_data['id']
     data = python_data['data']
     return make_command(id, TYPE, *data)
+
+def make_command_from_string(text):
+    python_data = json.loads(text)
+    type = python_data['type']
+    if type == 'start':
+        return make_command_from_json(DroneStartCommand, text)
+    elif type == 'land':
+        return make_command_from_json(DroneLandCommand, text)
+    elif type == 'move':
+        return make_command_from_json(DroneMoveCommand, text)
+    elif type == 'moveTo':
+        return make_command_from_json(DroneMoveToCommand, text)
+    elif type == 'moveHome':
+        return make_command_from_json(DroneMoveHomeCommand, text)
