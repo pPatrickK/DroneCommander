@@ -7,6 +7,7 @@ from drone_command import *
 from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
+import json
 
 def on_connect(client, userdata, flags, rc):
     print "Connecterd with the result code: " + str(rc)
@@ -27,7 +28,7 @@ def run_drone_commander(args):
             Drone(max_velocity, Vector2D(1, 0)),
             Drone(max_velocity, Vector2D(1, 1))
     ]
-    #drones = wrap_drones(drones, error_observer)
+    drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
 

@@ -47,7 +47,7 @@ class DroneCommander(object):
             self._notify(exception_traceback)
 
     def _run_realtime(self):
-        #queue = self.commands.copy()
+        queue = self.commands #.copy()
 
         while len(queue.data) > 0:
             next_commands_start = queue.peek()[1].start
@@ -58,7 +58,7 @@ class DroneCommander(object):
             self._run_command(id, command)
 
     def _run_fast(self):
-        #queue = self.commands.copy()
+        queue = self.commands #.copy()
 
         while len(queue.data) > 0:
             command_data = queue.pop()
