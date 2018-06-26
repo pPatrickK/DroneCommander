@@ -9,7 +9,7 @@ from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
 import sys, os
-sys.path.append(os.path.join(sys.path[0], '..'))
+sys.path.append(os.path.join(sys.path[0], '..')) # for pycrazyswam
 from pycrazyswarm import *
 
 def on_connect(client, userdata, flags, rc):
