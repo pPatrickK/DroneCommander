@@ -16,7 +16,6 @@ def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/start'): # {"id":0, "data": [0.0, 1.0, 0.5] }
         #command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector3D(0, 3), 1.0))
-        print "got start"
         print make_command_from_json(DroneStartCommand, msg.payload)
 
 def run_drone_commander(args):

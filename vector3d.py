@@ -66,3 +66,13 @@ class Vector3D(object):
 
     def toString(self):
         return "[" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + "]"
+
+
+def vector3d_from_list(elements):
+    return Vector3D(elements[0], elements[1], elements[2])
+
+def vector3d_from_list_or_instance(obj):
+    if type(obj) is list:
+        return vector3d_from_list(obj)
+    else:
+        return obj

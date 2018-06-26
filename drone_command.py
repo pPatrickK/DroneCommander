@@ -53,7 +53,7 @@ class DroneLandCommand(DroneTimedCommand):
 class DroneMoveCommand(DroneTimedCommand):
     def __init__(self, start, time, amount, yaw_amount):
         super(DroneMoveCommand, self).__init__(DroneCommandType.MOVE, start, time)
-        self.amount = amount
+        self.amount = vector3d_from_list_or_instance(amount)
         self.yaw_amount = yaw_amount
 
     def __str__(self):
@@ -65,7 +65,7 @@ class DroneMoveCommand(DroneTimedCommand):
 class DroneMoveToCommand(DroneTimedCommand):
     def __init__(self, start, time, position, yaw):
         super(DroneMoveToCommand, self).__init__(DroneCommandType.MOVETO, start, time)
-        self.position = position
+        self.position = vector3d_from_list_or_instance(position)
         self.yaw = yaw
 
     def __str__(self):
@@ -83,7 +83,6 @@ class DroneMoveHomeCommand(DroneTimedCommand):
 
     def toString(self):
         return super(DroneMoveHomeCommand, self).toString()
-
 
 def make_command(drone_id, TYPE, *args):
     return (drone_id, TYPE(*args))
