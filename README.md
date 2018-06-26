@@ -1,6 +1,8 @@
 # This is a command based drone controller
 
-[MQTT Nachrichten Specs](##MQTT-Nachrichten-Specs)
+* [MQTT Nachrichten Specs](#mqtt-nachrichten-specs)
+  * [konkrete Befehle](#konkrete-befehle)
+  * [Simple Beispiele](#simple-beispiele)
 
 ## MQTT Nachrichten Specs
 Aufbau eines Befehls ist `{"id":1, "data": [] }`, wobei "id" die ID der jeweiligen Drohne und "data" eine Liste der Parameter des Befehls beschreibt.
@@ -39,7 +41,7 @@ Startzeitpunkt sollte bei direkter Befehlsausführung immer 0 sein. Über diesen
 | Beispiel | `{"id":1, "data": [0.0, 5.0] }` |
 | Aufbau von data | `[Startzeitpunkt, Dauer]` |
 
-### Simple Beispiele:
+### Simple Beispiele
 
 Starte Drohne 12 auf 0.5m innerhalb 1 Sekunde:
 > `{"id":12, "data": [0.0, 1.0, 0.5] }`
