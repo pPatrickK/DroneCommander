@@ -11,12 +11,23 @@ from drone_proxy import *
 def on_connect(client, userdata, flags, rc):
     print "Connecterd with the result code: " + str(rc)
     client.subscribe("crazyflie/start")
+    client.subscribe("crazyflie/land")
+    client.subscribe("crazyflie/move")
+    client.subscribe("crazyflie/moveto")
+    client.subscribe("crazyflie/movehome")
 
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/start'): # {"id":0, "data": [0.0, 1.0, 0.5] }
-        #command_queue.push(make_command(0, DroneMoveCommand, 1, 2, Vector3D(0, 3), 1.0))
         print make_command_from_json(DroneStartCommand, msg.payload)
+    elif(msg.topic == 'crazyflie/land'): # {"id":0, "data": [0.0, 1.0] }
+        print make_command_from_json(DroneLandCommand, msg.payload)
+    elif(msg.topic == 'crazyflie/move'): # {"id":0, "data": [0.0, 3.0, [0.5, 0.1, 0.0], 0.0] }
+        print make_command_from_json(DroneMoveCommand, msg.payload)
+    elif(msg.topic == 'crazyflie/moveto'): # {"id":0, "data": [0.0, 2.0, [3.0, 1.5, 0.6], 0.0] }
+        print make_command_from_json(DroneMoveToCommand, msg.payload)
+    elif(msg.topic == 'crazyflie/movehome'): # {"id":0, "data": [0.0, 5.0] }
+        print make_command_from_json(DroneMoveHomeCommand, msg.payload)
 
 def run_drone_commander(args):
     max_velocity = 1.0
