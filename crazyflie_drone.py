@@ -8,9 +8,11 @@ class CrazyflieDrone(Drone):
 
     def start(self, height, time):
         super(CrazyflieDrone, self).start(height, time)
+        self.cf.takeoff(targetHeight=height, duration=time)
 
     def land(self, time):
         super(CrazyflieDrone, self).land(time)
+        self.cf.land(targetHeight=0.02, duration=time)
 
     def move(self, amount, yaw, time):
         super(CrazyflieDrone, self).move(amount, yaw, time)
