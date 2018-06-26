@@ -8,6 +8,7 @@ from drone_command import *
 from thread import start_new_thread
 from print_observer import *
 from drone_proxy import *
+from drone_yaml_reader import *
 import sys, os
 sys.path.append(os.path.join(sys.path[0], '..')) # for pycrazyswam
 from pycrazyswarm import *
@@ -38,12 +39,10 @@ def run_drone_commander(args):
     allcfs = swarm.allcfs
     max_velocity = 1.0
     error_observer = PrintObserver()
-    drones = [
-            CrazyflieDrone(allcfs.crazyfliesById[0], max_velocity, Vector3D(0, 0, 0)),
-            CrazyflieDrone(allcfs.crazyfliesById[1], max_velocity, Vector3D(0, 1, 0)),
-            CrazyflieDrone(allcfs.crazyfliesById[2], max_velocity, Vector3D(1, 0, 0)),
-            CrazyflieDrone(allcfs.crazyfliesById[3], max_velocity, Vector3D(1, 1, 0))
-    ]
+    drones = []
+    drone_initial_data = get_initial_positions_by_id('../../launch/crazyflies.yaml')
+    for id, init_pos in drone_initial_data.iteritems():
+        drones.append(CrazyflieDrone(allcfs.crazyfliesById[id], max_velocity, vector3d_from_list(init_pos)))
     drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
