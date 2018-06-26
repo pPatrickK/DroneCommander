@@ -34,13 +34,15 @@ def on_message(client, userdata, msg):
         print make_command_from_json(DroneMoveHomeCommand, msg.payload)
 
 def run_drone_commander(args):
+    swarm = Crazyswarm()
+    allcfs = swarm.allcfs
     max_velocity = 1.0
     error_observer = PrintObserver()
     drones = [
-            CrazyflieDrone(max_velocity, Vector3D(0, 0, 0)),
-            CrazyflieDrone(max_velocity, Vector3D(0, 1, 0)),
-            CrazyflieDrone(max_velocity, Vector3D(1, 0, 0)),
-            CrazyflieDrone(max_velocity, Vector3D(1, 1, 0))
+            CrazyflieDrone(allcfs.crazyfliesById[0], max_velocity, Vector3D(0, 0, 0)),
+            CrazyflieDrone(allcfs.crazyfliesById[1], max_velocity, Vector3D(0, 1, 0)),
+            CrazyflieDrone(allcfs.crazyfliesById[2], max_velocity, Vector3D(1, 0, 0)),
+            CrazyflieDrone(allcfs.crazyfliesById[3], max_velocity, Vector3D(1, 1, 0))
     ]
     drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
