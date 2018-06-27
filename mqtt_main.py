@@ -34,7 +34,7 @@ def on_message(client, userdata, msg):
     elif(msg.topic == 'crazyflie/movehome'): # {"id":0, "data": [0.0, 5.0] }
         print make_command_from_json(DroneMoveHomeCommand, msg.payload)
 
-def run_drone_commander(args):
+def run_drone_commander():
     swarm = Crazyswarm()
     allcfs = swarm.allcfs
     max_velocity = 1.0
@@ -47,19 +47,22 @@ def run_drone_commander(args):
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
 
-
-def main():
-    global command_queue
-    command_queue = DroneCommandQueue()
-    start_new_thread(run_drone_commander, (1,))
+def run_mqtt_client():
     client = mqtt.Client("CrazyflieClient")
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect("broker.hivemq.com", 1883, 60) # host, port, keep_alive
+    client.connect("gopher.phynetlab.com", 8883, 60) # host, port, keep_alive
 
     client.loop_forever()
 
     client.disconnect()
+
+def main():
+    global command_queue
+    command_queue = DroneCommandQueue()
+    start_new_thread(run_mqtt_client, ())
+    run_drone_commander()
+
 
 if __name__ == '__main__':
     main()
