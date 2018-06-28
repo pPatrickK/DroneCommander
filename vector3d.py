@@ -49,11 +49,13 @@ class Vector3D(object):
         self.addX(other.x)
         self.addY(other.y)
         self.addZ(other.z)
+        return self
 
     def __sub__(self, other):
         self.addX(-other.x)
         self.addY(-other.y)
         self.addZ(-other.z)
+        return self
 
     def __eq__(self, other):
         return self.getX() == other.getX() and self.getY() == other.getY() and self.getZ() == other.getZ()
