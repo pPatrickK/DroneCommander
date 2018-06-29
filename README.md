@@ -7,7 +7,7 @@
 ## MQTT Nachrichten Specs
 Aufbau eines Befehls ist `{"id":1, "data": [] }`, wobei "id" die ID der jeweiligen Drohne und "data" eine Liste der Parameter des Befehls beschreibt.
 
-Startzeitpunkt sollte bei direkter Befehlsausführung immer 0 sein. Über diesen Parameter wird die Möglichkeit gegeben Befehle verzögert auszuführen.
+Startzeitpunkt sollte bei direkter Befehlsausführung immer 0 sein. Über diesen Parameter wird die Möglichkeit gegeben Befehle verzögert auszuführen. Dieser Zeitpunkt liegt relativ zum Empfang der Nachricht. Soll der Befehl also 5 Sekunden in der Zukungs ausgeführt werden kann hier ein Wert von 5.0 gesetzt werden.
 
 
 ### konkrete Befehle
@@ -66,3 +66,6 @@ Bewege Drohne 12 zurück zu ihrer Startposition innerhalb von 18 Sekunden:
 
 Lande Drohne 12 innerhalb von 0.5 Sekunden:
 > `{"id":12, "data": [0.0, 0.5] }`
+
+Lande Drohne 12 innerhalb von 0.5 Sekunden. Verzögere diesen Befehl allerdings um 10.5 Sekunden:
+> `{"id":12, "data": [10.5, 0.5] }`
