@@ -8,6 +8,7 @@ class DroneCommandType(Enum):
     MOVE = 3
     MOVETO = 4
     MOVEHOME = 5
+    LANDWITHHEIGHT = 6
 
 class DroneCommand(object):
     def __init__(self, type, start):
@@ -49,6 +50,17 @@ class DroneLandCommand(DroneTimedCommand):
 
     def toString(self):
         return super(DroneLandCommand, self).toString()
+
+class DroneLandWithHeightCommand(DroneTimedCommand):
+    def __init__(self, start, time, height):
+        super(DroneLandWithHeightCommand, self).__init__(DroneCommandType.LANDWITHHEIGHT, start, time)
+        self.height = height
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return super(DroneLandWithHeightCommand, self).toString() + "height of: " + str(self.height) + "\n"
 
 class DroneMoveCommand(DroneTimedCommand):
     def __init__(self, start, time, amount, yaw_amount):

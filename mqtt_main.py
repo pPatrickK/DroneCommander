@@ -42,6 +42,8 @@ def on_message(client, userdata, msg):
         command_queue.push(make_command_from_json(DroneMoveToCommand, msg.payload))
     elif(msg.topic == 'crazyflie/movehome'): # {"id":0, "data": [0.0, 5.0] }
         command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload))
+    elif(msg.topic == 'crazyflie/landwithheight'): # {"id":0, "data": [0.0, 0.02, 1.0] }
+        command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload))
 
 def run_drone_commander():
     swarm = Crazyswarm()

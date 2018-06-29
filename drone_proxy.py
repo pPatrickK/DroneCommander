@@ -65,6 +65,15 @@ class DroneProxy(object):
             self.drone.land(time)
             self.height = 0
 
+    def landWithHeight(self, height, time):
+        if not self.check_and_set_time_for_command(time):
+            self.notify("start for land was too early")
+        elif not self.check_max_velocity_height(height, time):
+            self.notify("drone is too fast in land")
+        else:
+            self.drone.land(time)
+            self.height = height
+
 def wrap_drone(drone, observer=None):
     return DroneProxy(drone, observer)
 

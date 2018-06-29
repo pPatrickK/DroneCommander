@@ -13,6 +13,9 @@ class Drone(object):
     def land(self, time):
         pass
 
+    def landWithHeight(self, height, time):
+        pass
+
     def move(self, amount, yaw, time):
         self.moveTo(self.position + amount, self.yaw + yaw, time)
 

@@ -40,6 +40,8 @@ class DroneCommander(object):
                 drone.moveTo(command.position, command.yaw, command.time)
             elif command.type == DroneCommandType.MOVEHOME:
                 drone.moveHome(command.time)
+            elif command.type == DroneCommandType.LANDWITHHEIGHT:
+                drone.landWithHeight(command.height, command.time)
             else:
                 self._notify("unknown command")
         except:

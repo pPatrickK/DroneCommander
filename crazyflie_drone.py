@@ -17,6 +17,9 @@ class CrazyflieDrone(object):
     def land(self, time):
         self.cf.land(targetHeight=0.02, duration=time)
 
+    def landWithHeight(self, height, time):
+        self.cf.land(targetHeight=height, duration=time)
+
     def move(self, amount, yaw, time):
         self.moveTo(self.position + amount, self.yaw + yaw, time)
 
