@@ -33,17 +33,17 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/start'): # {"id":0, "data": [0.0, 1.0, 0.5] }
-        command_queue.push(make_command_from_json(DroneStartCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneStartCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/land'): # {"id":0, "data": [0.0, 1.0] }
-        command_queue.push(make_command_from_json(DroneLandCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneLandCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/move'): # {"id":0, "data": [0.0, 3.0, [0.5, 0.1, 0.0], 0.0] }
-        command_queue.push(make_command_from_json(DroneMoveCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneMoveCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/moveto'): # {"id":0, "data": [0.0, 2.0, [3.0, 1.5, 0.6], 0.0] }
-        command_queue.push(make_command_from_json(DroneMoveToCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneMoveToCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/movehome'): # {"id":0, "data": [0.0, 5.0] }
-        command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/landwithheight'): # {"id":0, "data": [0.0, 0.02, 1.0] }
-        command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload))
+        command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload, True))
 
 def run_drone_commander():
     swarm = Crazyswarm()

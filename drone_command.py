@@ -1,6 +1,7 @@
 from enum import Enum
 from vector3d import *
 import json
+import datetime
 
 class DroneCommandType(Enum):
     START = 1
@@ -99,10 +100,12 @@ class DroneMoveHomeCommand(DroneTimedCommand):
 def make_command(drone_id, TYPE, *args):
     return (drone_id, TYPE(*args))
 
-def make_command_from_json(TYPE, json_data):
+def make_command_from_json(TYPE, json_data, add_server_start_time=False):
     python_data = json.loads(json_data)
     id = python_data['id']
     data = python_data['data']
+    if add_server_start_time:
+    data[0] += datetime.datetime.now()
     return make_command(id, TYPE, *data)
 
 def make_command_from_string(text):
