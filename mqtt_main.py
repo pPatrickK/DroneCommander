@@ -29,6 +29,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("crazyflie/move")
     client.subscribe("crazyflie/moveto")
     client.subscribe("crazyflie/movehome")
+    client.subscribe("crazyflie/landwithheight")
 
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)

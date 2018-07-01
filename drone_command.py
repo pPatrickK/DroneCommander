@@ -104,8 +104,8 @@ def make_command_from_json(TYPE, json_data, add_server_start_time=False):
     python_data = json.loads(json_data)
     id = python_data['id']
     data = python_data['data']
-    if add_server_start_time:
-    data[0] += datetime.datetime.now()
+    # if add_server_start_time:
+        # data[0] += datetime.datetime.now() # try, bug?
     return make_command(id, TYPE, *data)
 
 def make_command_from_string(text):
