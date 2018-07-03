@@ -1,9 +1,10 @@
 from drone import *
 import numpy as np
 import  copy as copy
+import uav_trajectory
 
 class CrazyflieDrone(object):
-    def __init__(self, cf, max_velocity, position = Vector3D(), yaw = 0.0):
+    def __init__(self, cf, allcfs, max_velocity, position = Vector3D(), yaw = 0.0):
         self.home_position = position
         self.position = copy.deepcopy(self.home_position)
         self.max_velocity = max_velocity
@@ -45,7 +46,7 @@ class CrazyflieDrone(object):
     def uploadTrajectory(self, file):
         traj1 = uav_trajectory.Trajectory()
         traj1.loadcsv(file)
-        cf.uploadTrajectory(0, 0, traj1)
+        self.cf.uploadTrajectory(0, 0, traj1)
 
     def startTrajectory(self, TIMESCALE):
-        cf.startTrajectory(0, timescale=TIMESCALE, reverse=True)
+        self.allcfs.startTrajectory(0, timescale=TIMESCALE, reverse=False, relative = True, groupMask = 1)

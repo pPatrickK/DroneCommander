@@ -21,6 +21,6 @@ def generate_trajectory(waypoints):
     with open(waypoint_csv, "w+") as waypoint_csv_file:
         for waypoint in waypoints:
             waypoint_csv_file.write(','.join(str(coordinate) for coordinate in waypoint) + "\n")
-    run_trajectory_generation_tool(waypoint_csv, trajectory_csv, "/home/flw/Dokumente/uav_trajectories/build")
+    run_trajectory_generation_tool(waypoint_csv, trajectory_csv, "../../../../../../uav_trajectories/build")
     os.remove(waypoint_csv)
     return trajectory_csv

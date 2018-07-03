@@ -100,7 +100,7 @@ class DroneMoveHomeCommand(DroneTimedCommand):
 
 class DroneRunTrajectoryCommand(DroneCommand):
     def __init__(self, start, timescale, name):
-        super(DroneMakeAndRunTrajectoryCommand, self).__init__(DroneCommandType.RUNTRAJECTORY, start)
+        super(DroneRunTrajectoryCommand, self).__init__(DroneCommandType.RUNTRAJECTORY, start)
         self.timescale = timescale
         self.name = name
 
@@ -117,8 +117,8 @@ def make_command_from_json(TYPE, json_data, add_server_start_time=False):
     python_data = json.loads(json_data)
     id = python_data['id']
     data = python_data['data']
-    if add_server_start_time:
-        data[1].start += datetime.datetime.now() # try, bug?
+    # if add_server_start_time:
+    #     data[1].start += datetime.datetime.now() # try, bug?
     return make_command(id, TYPE, *data)
 
 def make_command_from_string(text):

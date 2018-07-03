@@ -50,12 +50,12 @@ def on_message(client, userdata, msg):
     elif(msg.topic == 'crazyflie/landwithheight'): # {"id":0, "data": [0.0, 0.02, 1.0] }
         command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/startChoreography'):
-        commands = read_commands_from_file(json.loads(msg.payload))
+        commands = read_commands_from_file("DroneCommander/choreographies/" + json.loads(msg.payload))
         for command in commands:
             command_queue.push(command)
     elif(msg.topic == 'crazyflie/createTrajectory'): # [[x,y,z],[x,y,z]]
         trajectory_name = generate_trajectory(json.loads(msg.payload))
-        command_queue.push(make_command(DroneRunTrajectoryCommand, [1.0, trajectory_name], True))
+        command_queue.push((1, DroneRunTrajectoryCommand(0.0, 1.0, trajectory_name)))#make_command(1, DroneRunTrajectoryCommand, [0.0, 1.0, trajectory_name], True))
 
 def run_drone_commander():
     swarm = Crazyswarm()
@@ -65,7 +65,7 @@ def run_drone_commander():
     drones = {}
     drone_initial_data = get_initial_positions_by_id('../launch/crazyflies.yaml')
     for id, init_pos in drone_initial_data.iteritems():
-        drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], max_velocity, vector3d_from_list(init_pos))
+        drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], allcfs, max_velocity, vector3d_from_list(init_pos))
         #drones.append(CrazyflieDrone(allcfs.crazyfliesById[id], max_velocity, vector3d_from_list(init_pos)))
     #drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
