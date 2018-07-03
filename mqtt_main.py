@@ -11,6 +11,8 @@ from drone_proxy import *
 from drone_yaml_reader import *
 import sys, os
 import time
+import json
+from generate_trajectory import generate_trajectory
 sys.path.append(os.path.join(sys.path[0], '..')) # for pycrazyswam
 from pycrazyswarm import *
 
@@ -30,6 +32,8 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("crazyflie/moveto")
     client.subscribe("crazyflie/movehome")
     client.subscribe("crazyflie/landwithheight")
+    client.subscribe("crazyflie/startChoreography")
+    client.subscribe("crazyflie/createTrajectory")
 
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
@@ -45,6 +49,13 @@ def on_message(client, userdata, msg):
         command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload, True))
     elif(msg.topic == 'crazyflie/landwithheight'): # {"id":0, "data": [0.0, 0.02, 1.0] }
         command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload, True))
+    elif(msg.topic == 'crazyflie/startChoreography'):
+        commands = read_commands_from_file(json.loads(msg.payload))
+        for command in commands:
+            command_queue.push(command)
+    elif(msg.topic == 'crazyflie/createTrajectory'): # [[x,y,z],[x,y,z]]
+        trajectory_name = generate_trajectory(json.loads(msg.payload))
+        command_queue.push(make_command(DroneRunTrajectoryCommand, [1.0, trajectory_name], True))
 
 def run_drone_commander():
     swarm = Crazyswarm()

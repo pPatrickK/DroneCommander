@@ -10,6 +10,7 @@ class DroneCommandType(Enum):
     MOVETO = 4
     MOVEHOME = 5
     LANDWITHHEIGHT = 6
+    RUNTRAJECTORY = 7
 
 class DroneCommand(object):
     def __init__(self, type, start):
@@ -97,6 +98,18 @@ class DroneMoveHomeCommand(DroneTimedCommand):
     def toString(self):
         return super(DroneMoveHomeCommand, self).toString()
 
+class DroneRunTrajectoryCommand(DroneCommand):
+    def __init__(self, start, timescale, name):
+        super(DroneMakeAndRunTrajectoryCommand, self).__init__(DroneCommandType.RUNTRAJECTORY, start)
+        self.timescale = timescale
+        self.name = name
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return super(DroneMakeAndRunTrajectoryCommand, self).toString() + " timescale: " + self.timescale + " name: " + self.name
+
 def make_command(drone_id, TYPE, *args):
     return (drone_id, TYPE(*args))
 
@@ -104,8 +117,8 @@ def make_command_from_json(TYPE, json_data, add_server_start_time=False):
     python_data = json.loads(json_data)
     id = python_data['id']
     data = python_data['data']
-    # if add_server_start_time:
-        # data[0] += datetime.datetime.now() # try, bug?
+    if add_server_start_time:
+        data[1].start += datetime.datetime.now() # try, bug?
     return make_command(id, TYPE, *data)
 
 def make_command_from_string(text):
@@ -121,3 +134,14 @@ def make_command_from_string(text):
         return make_command_from_json(DroneMoveToCommand, text)
     elif type == 'moveHome':
         return make_command_from_json(DroneMoveHomeCommand, text)
+    elif type == 'landWithHeight':
+        return make_command_from_json(DroneLandWithHeightCommand, text)
+
+def read_commands_from_file(path):
+    commands = []
+    with open(path, "r") as file:
+        content = file.readlines()
+        for line in content:
+            command = make_command_from_string(line)
+            commands.append(command)
+    return commands

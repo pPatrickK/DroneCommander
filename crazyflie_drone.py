@@ -41,3 +41,11 @@ class CrazyflieDrone(object):
         home = Vector3D(self.home_position.x, self.home_position.y, self.position.z)
         self.moveTo(home, 0.0, time)
         print self.position
+
+    def uploadTrajectory(self, file):
+        traj1 = uav_trajectory.Trajectory()
+        traj1.loadcsv(file)
+        cf.uploadTrajectory(0, 0, traj1)
+
+    def startTrajectory(self, TIMESCALE):
+        cf.startTrajectory(0, timescale=TIMESCALE, reverse=True)
