@@ -58,17 +58,23 @@ def on_message(client, userdata, msg):
         command_queue.push((1, DroneRunTrajectoryCommand(0.0, 1.0, trajectory_name)))#make_command(1, DroneRunTrajectoryCommand, [0.0, 1.0, trajectory_name], True))
 
 def run_drone_commander():
+    is_sim = True
+    should_wrap = False
     global drone_commander
-    swarm = Crazyswarm()
-    allcfs = swarm.allcfs
+    if not is_sim:
+        swarm = Crazyswarm()
+        allcfs = swarm.allcfs
     max_velocity = 1.0
     error_observer = PrintObserver()
     drones = {}
     drone_initial_data = get_initial_positions_by_id('../launch/crazyflies.yaml')
     for id, init_pos in drone_initial_data.iteritems():
-        drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], allcfs, max_velocity, vector3d_from_list(init_pos))
-        #drones.append(CrazyflieDrone(allcfs.crazyfliesById[id], max_velocity, vector3d_from_list(init_pos)))
-    #drones = wrap_drones(drones, error_observer)
+        if not is_sim:
+            drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], allcfs, max_velocity, vector3d_from_list(init_pos))
+        else:
+            drones[id] = Drone(max_velocity, vector3d_from_list(init_pos))
+    if should_wrap:
+        drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
 
