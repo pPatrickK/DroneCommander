@@ -28,6 +28,7 @@ def main():
     queue.push(make_command(2, DroneMoveCommand, 3, 1.5, Vector3D(), 0.0))
     queue.push(make_command(3, DroneMoveCommand, 2, 3, Vector3D(), 0.0))
 
+
     drone_commander = DroneCommander(drones, queue, error_observer)
 
     # drone_commander.print_commands()
