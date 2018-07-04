@@ -38,19 +38,19 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
     if(msg.topic == 'crazyflie/start'): # {"id":0, "data": [0.0, 1.0, 0.5] }
-        command_queue.push(make_command_from_json(DroneStartCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneStartCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/land'): # {"id":0, "data": [0.0, 1.0] }
-        command_queue.push(make_command_from_json(DroneLandCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneLandCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/move'): # {"id":0, "data": [0.0, 3.0, [0.5, 0.1, 0.0], 0.0] }
-        command_queue.push(make_command_from_json(DroneMoveCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneMoveCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/moveto'): # {"id":0, "data": [0.0, 2.0, [3.0, 1.5, 0.6], 0.0] }
-        command_queue.push(make_command_from_json(DroneMoveToCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneMoveToCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/movehome'): # {"id":0, "data": [0.0, 5.0] }
-        command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneMoveHomeCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/landwithheight'): # {"id":0, "data": [0.0, 0.02, 1.0] }
-        command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload, True))
+        command_queue.push(make_command_from_json(DroneLandWithHeightCommand, msg.payload, drone_commander.start_time))
     elif(msg.topic == 'crazyflie/startChoreography'):
-        commands = read_commands_from_file("DroneCommander/choreographies/" + json.loads(msg.payload))
+        commands = read_commands_from_file("DroneCommander/choreographies/" + json.loads(msg.payload), drone_commander.start_time)
         for command in commands:
             command_queue.push(command)
     elif(msg.topic == 'crazyflie/createTrajectory'): # [[x,y,z],[x,y,z]]
@@ -58,16 +58,23 @@ def on_message(client, userdata, msg):
         command_queue.push((1, DroneRunTrajectoryCommand(0.0, 1.0, trajectory_name)))#make_command(1, DroneRunTrajectoryCommand, [0.0, 1.0, trajectory_name], True))
 
 def run_drone_commander():
-    swarm = Crazyswarm()
-    allcfs = swarm.allcfs
+    is_sim = True
+    should_wrap = False
+    global drone_commander
+    if not is_sim:
+        swarm = Crazyswarm()
+        allcfs = swarm.allcfs
     max_velocity = 1.0
     error_observer = PrintObserver()
     drones = {}
     drone_initial_data = get_initial_positions_by_id('../launch/crazyflies.yaml')
     for id, init_pos in drone_initial_data.iteritems():
-        drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], allcfs, max_velocity, vector3d_from_list(init_pos))
-        #drones.append(CrazyflieDrone(allcfs.crazyfliesById[id], max_velocity, vector3d_from_list(init_pos)))
-    #drones = wrap_drones(drones, error_observer)
+        if not is_sim:
+            drones[id] = CrazyflieDrone(allcfs.crazyfliesById[id], allcfs, max_velocity, vector3d_from_list(init_pos))
+        else:
+            drones[id] = Drone(max_velocity, vector3d_from_list(init_pos))
+    if should_wrap:
+        drones = wrap_drones(drones, error_observer)
     drone_commander = DroneCommander(drones, command_queue, error_observer)
     drone_commander.runForever()
 

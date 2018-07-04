@@ -113,35 +113,35 @@ class DroneRunTrajectoryCommand(DroneCommand):
 def make_command(drone_id, TYPE, *args):
     return (drone_id, TYPE(*args))
 
-def make_command_from_json(TYPE, json_data, add_server_start_time=False):
+def make_command_from_json(TYPE, json_data, start_time=None):
     python_data = json.loads(json_data)
     id = python_data['id']
     data = python_data['data']
-    # if add_server_start_time:
-    #     data[1].start += datetime.datetime.now() # try, bug?
+    if start_time != None:
+        data[0] += (datetime.datetime.now() - start_time).total_seconds()
     return make_command(id, TYPE, *data)
 
-def make_command_from_string(text):
+def make_command_from_string(text, start_time=None):
     python_data = json.loads(text)
     type = python_data['type']
     if type == 'start':
-        return make_command_from_json(DroneStartCommand, text)
+        return make_command_from_json(DroneStartCommand, text, start_time)
     elif type == 'land':
-        return make_command_from_json(DroneLandCommand, text)
+        return make_command_from_json(DroneLandCommand, text, start_time)
     elif type == 'move':
-        return make_command_from_json(DroneMoveCommand, text)
+        return make_command_from_json(DroneMoveCommand, text, start_time)
     elif type == 'moveTo':
-        return make_command_from_json(DroneMoveToCommand, text)
+        return make_command_from_json(DroneMoveToCommand, text, start_time)
     elif type == 'moveHome':
-        return make_command_from_json(DroneMoveHomeCommand, text)
+        return make_command_from_json(DroneMoveHomeCommand, text, start_time)
     elif type == 'landWithHeight':
-        return make_command_from_json(DroneLandWithHeightCommand, text)
+        return make_command_from_json(DroneLandWithHeightCommand, text, start_time)
 
-def read_commands_from_file(path):
+def read_commands_from_file(path, start_time=None):
     commands = []
     with open(path, "r") as file:
         content = file.readlines()
         for line in content:
-            command = make_command_from_string(line)
+            command = make_command_from_string(line, start_time)
             commands.append(command)
     return commands

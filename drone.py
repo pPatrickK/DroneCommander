@@ -24,4 +24,12 @@ class Drone(object):
         self.yaw = yaw
 
     def moveHome(self, time):
-        self.moveTo(self.home_position, 0.0, time)
+        home = Vector3D(self.home_position.x, self.home_position.y, self.position.z)
+        self.moveTo(home, 0.0, time)
+        print self.position
+
+    def uploadTrajectory(self, file):
+        pass
+
+    def startTrajectory(self, TIMESCALE):
+        pass
