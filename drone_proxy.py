@@ -74,6 +74,12 @@ class DroneProxy(object):
             self.drone.land(time)
             self.height = height
 
+    def uploadTrajectory(self, file):
+        self.drone.uploadTrajectory(file)
+
+    def startTrajectory(self, TIMESCALE):
+        self.drone.startTrajectory(TIMESCALE)
+
 def wrap_drone(drone, observer=None):
     return DroneProxy(drone, observer)
 
