@@ -58,7 +58,7 @@ def on_message(client, userdata, msg):
         command_queue.push((1, DroneRunTrajectoryCommand(0.0, 1.0, trajectory_name)))#make_command(1, DroneRunTrajectoryCommand, [0.0, 1.0, trajectory_name], True))
 
 def run_drone_commander():
-    is_sim = True
+    is_sim = False
     should_wrap = False
     global drone_commander
     if not is_sim:
