@@ -27,7 +27,7 @@ Startzeitpunkt sollte bei direkter Befehlsausführung immer 0 sein. Über diesen
 | ------ | --- |
 | Pfad | *crazyflie/landwithheight* |
 | Beispiel | `{"id":0, "data": [0.0, 0.02, 1.0] }` |
-| Aufbau von data | `[Startzeitpunkt, Zielhöhe, Dauer]` |
+| Aufbau von data | `[Startzeitpunkt, Dauer, Zielhöhe]` |
 
 | bewegen um (relativ) |     |
 | ------ | --- |
