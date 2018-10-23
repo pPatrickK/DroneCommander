@@ -30,6 +30,7 @@ class DroneCommander(object):
     def _run_command(self, drone_id, command):
         try:
             drone = self.drones[drone_id]
+            print "pre", drone_id, drone.home_position
             if command.type == DroneCommandType.START:
                 drone.start(command.height, command.time)
             elif command.type == DroneCommandType.LAND:
@@ -47,6 +48,7 @@ class DroneCommander(object):
                 drone.startTrajectory(command.timescale)
             else:
                 self._notify("unknown command")
+            print "post", drone_id, drone.home_position
         except:
             exception_traceback = traceback.format_exc()
             self._notify(exception_traceback)
