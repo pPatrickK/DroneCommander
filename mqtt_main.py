@@ -34,6 +34,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("crazyflie/landwithheight")
     client.subscribe("crazyflie/startChoreography")
     client.subscribe("crazyflie/createTrajectory")
+    client.subscribe("crazyflie/startTrajectory")
 
 def on_message(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
@@ -53,9 +54,15 @@ def on_message(client, userdata, msg):
         commands = read_commands_from_file("DroneCommander/choreographies/" + json.loads(msg.payload), drone_commander.start_time)
         for command in commands:
             command_queue.push(command)
-    elif(msg.topic == 'crazyflie/createTrajectory'): # [[x,y,z],[x,y,z]]
+    elif(msg.topic == 'crazyflie/createTrajectory'): # {"id":0, "data": [[x,y,z],[x,y,z]] }
+        data = json.loads(msg.payload)
+        arr = data['data']
+        print(arr)
         trajectory_name = generate_trajectory(json.loads(msg.payload))
-        command_queue.push((1, DroneRunTrajectoryCommand(0.0, 1.0, trajectory_name)))#make_command(1, DroneRunTrajectoryCommand, [0.0, 1.0, trajectory_name], True))
+        id = json.loads(msg.payload)['id']
+        command_queue.push((id, DroneCreateTrajectoryCommand(0.0, trajectory_name, id)))
+    elif(msg.topic == 'crazyflie/startTrajectory'): # {"id":0, "data": [starttime, timescale] }
+        command_queue.push(make_command_from_json(DroneRunTrajectoryCommand, msg.payload, drone_commander.start_time))
 
 def run_drone_commander():
     is_sim = False
@@ -84,7 +91,8 @@ def run_mqtt_client():
             client = mqtt.Client("CrazyflieClient")
             client.on_connect = on_connect
             client.on_message = on_message
-            client.connect("gopher.phynetlab.com", 8883, 60) # host, port, keep_alive
+            #client.connect("gopher.phynetlab.com", 8883, 60) # host, port, keep_alive
+            client.connect("192.168.2.9", 1883, 60) # host, port, keep_alive
             client.loop_forever()
 
             client.disconnect()

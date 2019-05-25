@@ -10,7 +10,8 @@ class DroneCommandType(Enum):
     MOVETO = 4
     MOVEHOME = 5
     LANDWITHHEIGHT = 6
-    RUNTRAJECTORY = 7
+    CREATETRAJECTORY = 7
+    RUNTRAJECTORY = 8
 
 class DroneCommand(object):
     def __init__(self, type, start):
@@ -98,17 +99,28 @@ class DroneMoveHomeCommand(DroneTimedCommand):
     def toString(self):
         return super(DroneMoveHomeCommand, self).toString()
 
-class DroneRunTrajectoryCommand(DroneCommand):
-    def __init__(self, start, timescale, name):
-        super(DroneRunTrajectoryCommand, self).__init__(DroneCommandType.RUNTRAJECTORY, start)
-        self.timescale = timescale
+class DroneCreateTrajectoryCommand(DroneCommand):
+    def __init__(self, start, name, id):
+        super(DroneCreateTrajectoryCommand, self).__init__(DroneCommandType.CREATETRAJECTORY, start)
         self.name = name
+        self.id = id
 
     def __str__(self):
         return self.toString()
 
     def toString(self):
-        return super(DroneMakeAndRunTrajectoryCommand, self).toString() + " timescale: " + self.timescale + " name: " + self.name
+        return super(DroneMakeAndRunTrajectoryCommand, self).toString() + " id: " + self.id + " name: " + self.name
+
+class DroneRunTrajectoryCommand(DroneCommand):
+    def __init__(self, start, timescale):
+        super(DroneRunTrajectoryCommand, self).__init__(DroneCommandType.RUNTRAJECTORY, start)
+        self.timescale = timescale
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return super(DroneMakeAndRunTrajectoryCommand, self).toString() + " timescale: " + self.timescale
 
 def make_command(drone_id, TYPE, *args):
     return (drone_id, TYPE(*args))

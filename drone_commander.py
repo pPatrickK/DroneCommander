@@ -43,8 +43,9 @@ class DroneCommander(object):
                 drone.moveHome(command.time)
             elif command.type == DroneCommandType.LANDWITHHEIGHT:
                 drone.landWithHeight(command.height, command.time)
-            elif command.type == DroneCommandType.RUNTRAJECTORY:
+            elif command.type == DroneCommandType.CREATETRAJECTORY:
                 drone.uploadTrajectory(command.name)
+            elif command.type == DroneCommandType.RUNTRAJECTORY:
                 drone.startTrajectory(command.timescale)
             else:
                 self._notify("unknown command")
