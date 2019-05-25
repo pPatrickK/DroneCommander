@@ -55,9 +55,6 @@ def on_message(client, userdata, msg):
         for command in commands:
             command_queue.push(command)
     elif(msg.topic == 'crazyflie/createTrajectory'): # {"id":0, "data": [[x,y,z],[x,y,z]] }
-        data = json.loads(msg.payload)
-        arr = data['data']
-        print(arr)
         trajectory_name = generate_trajectory(json.loads(msg.payload))
         id = json.loads(msg.payload)['id']
         command_queue.push((id, DroneCreateTrajectoryCommand(0.0, trajectory_name, id)))

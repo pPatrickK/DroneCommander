@@ -20,6 +20,10 @@ class CrazyflieDrone(object):
         #print height
         print self.position
 
+    #def stop(self):
+    #    self.cf.stop()
+    #    print self.position
+
     def land(self, time):
         self.cf.land(targetHeight=0.02, duration=time)
         print self.position
