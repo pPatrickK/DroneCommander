@@ -84,7 +84,8 @@ def run_mqtt_client():
             client = mqtt.Client("CrazyflieClient")
             client.on_connect = on_connect
             client.on_message = on_message
-            client.connect("gopher.phynetlab.com", 8883, 60) # host, port, keep_alive
+            client.connect("192.168.2.9", 1883, 60) # host, port, keep_alive
+            # client.connect("gopher.phynetlab.com", 8883, 60) # host, port, keep_alive
             client.loop_forever()
 
             client.disconnect()
